@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpDesk Lite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #16213e; padding: 40px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        h1 { text-align: center; margin-bottom: 30px; color: #0f3460; background: #e94560; padding: 12px; border-radius: 8px; font-size: 1.5em; }
+        label { display: block; margin-top: 15px; font-weight: 600; color: #a8a8b3; }
+        input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #0f3460; border-radius: 6px; background: #1a1a2e; color: #eee; font-size: 1em; }
+        textarea { height: 100px; resize: vertical; }
+        button { width: 100%; padding: 14px; margin-top: 20px; background: #e94560; color: white; border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #c23152; }
+        .sucesso { background: #2ecc71; color: #1a1a2e; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: bold; }
+        .admin-link { text-align: center; margin-top: 20px; }
+        .admin-link a { color: #a8a8b3; text-decoration: none; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HelpDesk Lite</h1>
+        
+        {% if sucesso %}
+        <div class="sucesso">
+            Chamado #{{ protocolo }} aberto com sucesso!
+        </div>
+        {% endif %}
+        
+        <form action="/abrir" method="POST">
+            <label>Nome</label>
+            <input type="text" name="nome" required>
+            
+            <label>E-mail</label>
+            <input type="email" name="email" required>
+            
+            <label>Tipo de Problema</label>
+            <select name="tipo" required>
+                <option value="">Selecione...</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Software">Software</option>
+                <option value="Rede">Rede</option>
+                <option value="Outro">Outro</option>
+            </select>
+            
+            <label>Descrição do Problema</label>
+            <textarea name="descricao" required></textarea>
+            
+            <button type="submit">Abrir Chamado</button>
+        </form>
+        
+        <div class="admin-link">
+            <a href="/login">Área Administrativa</a>
+        </div>
+    </div>
+</body>
+</html>

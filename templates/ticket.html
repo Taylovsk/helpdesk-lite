@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket - HelpDesk Lite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        h1 { color: #e94560; margin-bottom: 20px; }
+        .card { background: #16213e; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+        .card h2 { margin-bottom: 15px; color: #a8a8b3; font-size: 1em; text-transform: uppercase; letter-spacing: 1px; }
+        .campo { margin-bottom: 12px; }
+        .campo strong { color: #a8a8b3; display: block; margin-bottom: 4px; font-size: 0.85em; }
+        .campo span { font-size: 1em; }
+        .status { padding: 5px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; display: inline-block; }
+        .status-novo { background: #3498db; color: white; }
+        .status-andamento { background: #f39c12; color: #1a1a2e; }
+        .status-resolvido { background: #2ecc71; color: #1a1a2e; }
+        label { display: block; margin-top: 15px; font-weight: 600; color: #a8a8b3; }
+        select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #0f3460; border-radius: 6px; background: #1a1a2e; color: #eee; font-size: 1em; }
+        textarea { height: 100px; resize: vertical; }
+        button { width: 100%; padding: 14px; margin-top: 20px; background: #e94560; color: white; border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #c23152; }
+        .voltar { text-align: center; margin-top: 15px; }
+        .voltar a { color: #a8a8b3; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ticket #{{ ticket[0] }}</h1>
+        
+        <div class="card">
+            <h2>Informações do Chamado</h2>
+            <div class="campo"><strong>Nome</strong><span>{{ ticket[1] }}</span></div>
+            <div class="campo"><strong>E-mail</strong><span>{{ ticket[2] }}</span></div>
+            <div class="campo"><strong>Tipo</strong><span>{{ ticket[3] }}</span></div>
+            <div class="campo"><strong>Descrição</strong><span>{{ ticket[4] }}</span></div>
+            <div class="campo"><strong>Status</strong>
+                {% if ticket[5] == 'Novo' %}
+                    <span class="status status-novo">Novo</span>
+                {% elif ticket[5] == 'Em andamento' %}
+                    <span class="status status-andamento">Em andamento</span>
+                {% else %}
+                    <span class="status status-resolvido">Resolvido</span>
+                {% endif %}
+            </div>
+            <div class="campo"><strong>Abertura</strong><span>{{ ticket[7] }}</span></div>
+            {% if ticket[8] %}
+            <div class="campo"><strong>Fechamento</strong><span>{{ ticket[8] }}</span></div>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h2>Atualizar Chamado</h2>
+            <form action="/atualizar/{{ ticket[0] }}" method="POST">
+                <label>Status</label>
+                <select name="status">
+                    <option value="Novo" {% if ticket[5] == 'Novo' %}selected{% endif %}>Novo</option>
+                    <option value="Em andamento" {% if ticket[5] == 'Em andamento' %}selected{% endif %}>Em andamento</option>
+                    <option value="Resolvido" {% if ticket[5] == 'Resolvido' %}selected{% endif %}>Resolvido</option>
+                </select>
+                
+                <label>Resposta</label>
+                <textarea name="resposta">{{ ticket[6] }}</textarea>
+                
+                <button type="submit">Atualizar</button>
+            </form>
+        </div>
+        
+        <div class="voltar">
+            <a href="/admin">Voltar ao painel</a>
+        </div>
+    </div>
+</body>
+</html>

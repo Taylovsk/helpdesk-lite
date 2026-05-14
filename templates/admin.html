@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - HelpDesk Lite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: #e94560; margin-bottom: 10px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
+        .logout { background: #e94560; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        .logout:hover { background: #c23152; }
+        table { width: 100%; border-collapse: collapse; background: #16213e; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        th { background: #0f3460; padding: 14px; text-align: left; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 12px 14px; border-bottom: 1px solid #0f3460; font-size: 0.9em; }
+        tr:hover { background: rgba(233, 69, 96, 0.1); }
+        .status { padding: 5px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; display: inline-block; }
+        .status-novo { background: #3498db; color: white; }
+        .status-andamento { background: #f39c12; color: #1a1a2e; }
+        .status-resolvido { background: #2ecc71; color: #1a1a2e; }
+        .btn { padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85em; font-weight: bold; transition: 0.2s; }
+        .btn-ver { background: #0f3460; color: #a8a8b3; }
+        .btn-ver:hover { background: #1a4a7a; color: white; }
+        .vazio { text-align: center; padding: 50px; color: #a8a8b3; }
+        .voltar { text-align: center; margin-top: 20px; }
+        .voltar a { color: #a8a8b3; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Painel Administrativo</h1>
+            <a href="/logout" class="logout">Sair</a>
+        </div>
+        
+        {% if tickets %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Protocolo</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Status</th>
+                    <th>Abertura</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tickets %}
+                <tr>
+                    <td><strong>#{{ t[0] }}</strong></td>
+                    <td>{{ t[1] }}</td>
+                    <td>{{ t[3] }}</td>
+                    <td>
+                        {% if t[5] == 'Novo' %}
+                            <span class="status status-novo">Novo</span>
+                        {% elif t[5] == 'Em andamento' %}
+                            <span class="status status-andamento">Em andamento</span>
+                        {% else %}
+                            <span class="status status-resolvido">Resolvido</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ t[7] }}</td>
+                    <td><a href="/ticket/{{ t[0] }}" class="btn btn-ver">Ver</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vazio">Nenhum chamado aberto.</div>
+        {% endif %}
+        
+        <div class="voltar">
+            <a href="/">Voltar ao site</a>
+        </div>
+    </div>
+</body>
+</html>
